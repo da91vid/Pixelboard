@@ -1,16 +1,10 @@
 #include <JS.h>
-
 #include <FastLED.h>
-//#include "snake.h"
 #include "coordinates.h"
-
-
 #include <LEDMatrix.h>
 
-// Change the next 6 defines to match your matrix type and size
-
 #define LED_PIN        32
-#define LED_PIN2        33
+#define LED_PIN2       33
 #define COLOR_ORDER    GRB
 #define CHIPSET        WS2812B
 
@@ -23,7 +17,7 @@ int get_x = 0;
 int get_y = 0;
 int x = 15;
 int y = 7;
-int x_fruit = random(1,32),y_fruit = random(1,16);
+int x_fruit = random(1,31),y_fruit = random(1,15);
 int direction_ = 5;
 int lenght_snake =8;
 bool collision = false;
@@ -61,20 +55,10 @@ void setup() {
 
 }
 
-void loop() {
-
- 
-  //if(joystick.getX() > 3000 && x >0) x--;
-  //if(joystick.getX() < 1200 && x <31) x++;
-  //if(joystick.getY() > 3000 && y <15) y++;
-  //if(joystick.getY() < 1200 && y > 0) y--;
-
-    //Serial.println(joystick.getY());
-    //Serial.println(direction_);
-    //Serial.println(joystick.getX());
-
-    get_y = joystick.getX();
-    get_x = joystick.getY();
+void loop() 
+{
+  get_y = joystick.getX();
+  get_x = joystick.getY();
 
   if(get_x > 3000 && direction_ != 2 ) direction_ = 0;
   else if(get_x < 1200 && direction_ != 0) direction_ = 2;
@@ -87,95 +71,94 @@ void loop() {
     case 1: if(y <15) y++; break;
     case 2: if(x <31) x++; break;
     case 3: if(y > 0) y--; break;
-    }
+  }
 
   Serial.print("x: ");
   Serial.print(x);
   Serial.print("y: ");
   Serial.println(y);
   
-
-  
-
-  for (int i = 0; i < lenght_snake;i++){
-      cords_[lenght_snake-i-1] = cords_[lenght_snake-i-2];
+  for (int i = 0; i < lenght_snake;i++)
+  {
+    cords_[lenght_snake-i-1] = cords_[lenght_snake-i-2];
   }
+  
   cords_[0] = coordinates(x,y);
 
-   for (int i = 0; i < lenght_snake;i++){
-      drawPoint(cords_[i].get_coordinates_X(), cords_[i].get_coordinates_Y());
+  for (int i = 0; i < lenght_snake;i++)
+  {
+    drawPoint(cords_[i].get_coordinates_X(), cords_[i].get_coordinates_Y());
   }
 
   drawPoint(x_fruit,y_fruit);
 
-  if(cords_[0].get_coordinates_X() == x_fruit &&cords_[0].get_coordinates_Y() == y_fruit){
+  if(cords_[0].get_coordinates_X() == x_fruit &&cords_[0].get_coordinates_Y() == y_fruit)
+  {
     lenght_snake ++;
     x_fruit = random(1,31);
     y_fruit = random(1,15);
-
   }
+  
   if(direction_ != 5){  w8_cycle++;}
 
-  if (w8_cycle >= 10){
- for (int i = 1; i < lenght_snake -1;i++){
-      if(cords_[0].get_coordinates_X() == cords_[i].get_coordinates_X()&&cords_[0].get_coordinates_Y() == cords_[i].get_coordinates_Y()){collision = true;
-         Serial.println();
-          }
-  }}
+  if (w8_cycle >= 10)
+  {
+    for (int i = 1; i < lenght_snake -1;i++)
+    {
+      if(cords_[0].get_coordinates_X() == cords_[i].get_coordinates_X()&&cords_[0].get_coordinates_Y() == cords_[i].get_coordinates_Y())
+      {
+        collision = true;
+        Serial.println();
+      }
+    }
+  }
   
-    Serial.print(collision);
-  if(cords_[0].get_coordinates_X() == 0 ||cords_[0].get_coordinates_Y() == 0||cords_[0].get_coordinates_X() == 31 ||cords_[0].get_coordinates_Y() == 15||collision){
+  Serial.print(collision);
+  
+  if(cords_[0].get_coordinates_X() == 0 ||cords_[0].get_coordinates_Y() == 0||cords_[0].get_coordinates_X() == 31 ||cords_[0].get_coordinates_Y() == 15||collision)
+  {
     collision = false;
-     w8_cycle = 0;
+    w8_cycle = 0;
 
-    for (int i = 0; i< 5 ;i++) {
-    FastLED.show(); 
-    delay(100);
-    FastLED.clear();
-    delay(100);
-    for (int i = 0; i < lenght_snake;i++){
-      drawPoint(cords_[i].get_coordinates_X(), cords_[i].get_coordinates_Y());
-    }}
+    for (int i = 0; i< 5 ;i++) 
+    {
+      FastLED.show(); 
+      delay(100);
+      FastLED.clear();
+      delay(100);
+      for (int i = 0; i < lenght_snake;i++)
+      {
+        drawPoint(cords_[i].get_coordinates_X(), cords_[i].get_coordinates_Y());
+      } 
+    }
    
     cords_[0] = coordinates(15,8);
     x = 15;
     y = 7;
     direction_ = 5;
     lenght_snake =8;
-    w8_cycle = 0;
-    
+    w8_cycle = 0; 
   }
-
-
-  
-
-  
-  
 
   FastLED.show();  
   delay(100);
   
   FastLED.clear();
   drawMap();
-
-
-  
-
 }
 
-
-
-void drawPoint(int x, int y){
-    if (y > 7) {
+void drawPoint(int x, int y)
+{
+  if (y > 7) 
+  {
     leds2.DrawLine(x, y-8, x, y-8, CRGB(255, 0, 255));
-    }
-  else{
+  }else{
     leds.DrawLine(x, y, x, y, CRGB(255, 0, 255));
-    //Serial.println("panel2");
   }
 }
 
-void drawMap(){
+void drawMap()
+{
   // Panel 1 Wall
   leds.DrawLine(0, 0, 31, 0, CRGB(255, 0, 0));
   leds.DrawLine(0, 0, 0, 7, CRGB(255, 0, 0));
@@ -185,5 +168,4 @@ void drawMap(){
   leds2.DrawLine(0, 7, 31, 7, CRGB(255, 0, 0));
   leds2.DrawLine(0, 0, 0, 7, CRGB(255, 0, 0));
   leds2.DrawLine(31, 7, 31, 0, CRGB(255, 0, 0));
-
 }

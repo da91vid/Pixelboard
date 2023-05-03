@@ -1,21 +1,20 @@
 #include "coordinates.h"
 
-coordinates::coordinates(int x, int y) {
+coordinates::coordinates(int x, int y) 
+{
   X=x;
   Y=y;
 }
-coordinates::coordinates() {
+coordinates::coordinates() 
+{
   X = 44;
   Y= 44;
-
 }
-
-int coordinates::get_coordinates_Y(){
+int coordinates::get_coordinates_Y()
+{
   return Y;
 }
-
-
- int coordinates::get_coordinates_X(){
+int coordinates::get_coordinates_X()
+{
   return X;
 }
-

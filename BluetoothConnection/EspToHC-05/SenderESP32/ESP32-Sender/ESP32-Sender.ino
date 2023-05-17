@@ -36,7 +36,7 @@ void loop() {
     previousMillis = currentMillis;
 
     if (SerialBT.connected()) {
-      const char* message = "Hello, world!";
+      const char* message = "Steff";
       SerialBT.println(message);
     }
   }
